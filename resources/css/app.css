@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root{--bg:#f6faf8;--card:#fff;--line:#d3e2db;--ink:#0f1a17;--mute:#4a5c56;--acc:#047857}
+.dark{--bg:#0a0f0e;--card:#0f1715;--line:#1f2d29;--ink:#e6f0ec;--mute:#94a8a0;--acc:#34d399}
+
+@theme inline{
+  --color-bg:var(--bg);--color-card:var(--card);--color-line:var(--line);
+  --color-ink:var(--ink);--color-mute:var(--mute);--color-acc:var(--acc);
+  --font-head:'Space Grotesk',sans-serif;--font-mono:'JetBrains Mono',monospace
+}
+
+/* Custom classes live in cascade layers so utilities (w-60, hover:border-acc, py-16...)
+   can override them without !important hacks. */
+@layer base{
+  body{font-family:Inter,sans-serif}
+  :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+  section{@apply scroll-mt-16 py-20}
+}
+
+@layer components{
+  .tag{@apply inline-block rounded border border-acc/30 bg-acc/10 px-2 py-1 font-mono text-[11px] uppercase tracking-widest text-acc}
+  .card{@apply rounded-xl border border-line bg-card p-5}
+  .chip{@apply rounded border border-line px-2 py-0.5 font-mono text-[11px] text-mute}
+  .pill{@apply cursor-pointer rounded-full border border-line px-4 py-1.5 text-sm text-mute aria-pressed:border-acc aria-pressed:bg-acc aria-pressed:text-bg aria-selected:border-acc aria-selected:bg-acc aria-selected:text-bg}
+  .field{@apply w-full rounded-lg border border-line bg-bg px-3 py-2 text-sm text-ink placeholder:text-mute}
+  .h2{@apply mt-3 font-head text-3xl font-bold}
+
+  /* Hover glow shared by every interactive card (was repeated 4x in the HTML) */
+  .card-hover{transition:transform .3s,border-color .3s,box-shadow .3s}
+  .card-hover:hover{border-color:var(--acc);box-shadow:0 0 30px 6px color-mix(in srgb,var(--acc) 35%,transparent)}
+  @media (prefers-reduced-motion:no-preference){
+    .card-hover:hover{transform:translateY(-.25rem) scale(1.02)}
+  }
+}
